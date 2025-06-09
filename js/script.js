@@ -21,40 +21,54 @@ const formEl = document.getElementById('answers-form');
 const confirmButtonEl = document.querySelector('.btn');
 
 // prendo gli input del form dalla DOM
-const userNumber1 = document.getElementById('number1').value;
-const userNumber2 = document.getElementById('number2').value;
-const userNumber3 = document.getElementById('number3').value;
-const userNumber4 = document.getElementById('number4').value;
-const userNumber5 = document.getElementById('number5').value;
+const userNumber1El = document.getElementById('number1');
+const userNumber2El = document.getElementById('number2');
+const userNumber3El = document.getElementById('number3');
+const userNumber4El = document.getElementById('number4');
+const userNumber5El = document.getElementById('number5');
 
 // aggiungo alla lista 5 li contenenti un math random, facendo apparire numeri interi per comodità
 
 // come posso fare? Potrei creare 5 variabili ognuna con un math random e appenderli alla lista. Questo metodo non mi piace molto perché è ripetitivo.
+
 let li, li2, li3, li4, li5; 
 
-li = document.createElement('li');
+li1 = document.createElement('li');
 li2 = document.createElement('li');
 li3 = document.createElement('li');
 li4 = document.createElement('li');
 li5 = document.createElement('li');
 
-li.append(Math.floor(Math.random() * 101));
-li2.append(Math.floor(Math.random() * 101));
-li3.append(Math.floor(Math.random() * 101));
-li4.append(Math.floor(Math.random() * 101));
-li5.append(Math.floor(Math.random() * 101));
+function getRandomNumber() {
+    let randomNumber = Math.floor(Math.random() * 51)
+    return randomNumber;
+};
 
-console.log(li, li2, li3, li4, li5);
+let randomNumber1, randomNumber2, randomNumber3, randomNumber4, randomNumber5;
 
-numbersUlEl.append(li, li2, li3, li4, li5);
+randomNumber1 = li1.append(getRandomNumber());
+randomNumber2 = li2.append(getRandomNumber());
+randomNumber3 = li3.append(getRandomNumber());
+randomNumber4 = li4.append(getRandomNumber());
+randomNumber5 = li5.append(getRandomNumber());
+
+numbersUlEl.append(li1, li2, li3, li4, li5);
+
+// creo un array vuoto in cui salvo i numeri random generati, così da poterli usare dopo
+
+let randomNumbers = [];
+
+randomNumbers.push(parseInt(li1.innerText), parseInt(li2.innerText), parseInt(li3.innerText), parseInt(li4.innerText), parseInt(li5.innerText));
+
+console.log(randomNumbers);
 
 // Da lì parte un timer di 30 secondi
 
 // Dichiaro la funzione del time out:
-setTimeout(simonGame, 30000);
+setTimeout(simonGame, 5000);
 function simonGame() {
     // Dopo 30 secondi i numeri scompaiono
-    numbersUlEl.remove();
+    numbersUlEl.classList.add('d-none');
 
     // appaiono invece 5 input in cui l'utente deve inserire i numeri che ha visto precedentemente, nell'ordine che preferisce
     formEl.classList.remove('d-none');
@@ -63,16 +77,16 @@ function simonGame() {
 // il timer è triggerato dall'inizio stampa in pagina
 
 numbersUlEl.addEventListener('afterprint', (e)=>{
-    simonGame()
+    simonGame();
 });
 
 // Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei numeri da indovinare sono stati individuati
 
-// intanto devo salvare i numeri inseriti in un array, partendo quindi dalla creazione delle variabili corrispondenti ai value degli input
+// intanto devo salvare i numeri inseriti in un array vuoto, partendo dalle variabili con i valori degli input che ho già creato
 
 let userNumbers = [];
 
-// dovrò poi creare una variabile counter per contare i numeri indovinati, che partirà quindi da 0
+// dovrò creare una variabile counter per contare i numeri indovinati, che partirà quindi da 0
 
 let counter = 0;
 
@@ -80,7 +94,23 @@ let counter = 0;
 
 let correctNumbers = [];
 
-// adesso dovrò far eseguire la verifica al programma, che deve cioè stabilire se ognuno dei numeri inseriti dall'utente (input value) equivale ad uno qualunque dei random li (perché l'ordine di inserimento non conta). Questa verifica è triggerata dal click su conferma
+// adesso dovrò far eseguire la verifica al programma, che deve cioè stabilire se ognuno dei numeri inseriti dall'utente (input value) equivale ad uno qualunque dei random li (perché l'ordine di inserimento non conta), ciclando un array in cui ho annoverato i numeri inseriti dall'utente. Questa verifica è triggerata dal click su conferma
+
+confirmButtonEl.addEventListener('click', function arrayCompare(arr, arr) {
+    userNumbers.push(userNumber1El.value, userNumber2El.value, userNumber3El.value, userNumber4El.value, userNumber5El.value);
+    
+    //loggo per conferma
+
+    console.log(userNumbers);
+
+    for (let i = 0; i < userNumbers.length; i++) {
+        if (userNumbers[i] === randomNumbers[i]) {
+            let correctNumber = [i];
+            correctNumbers.push(i);
+        };
+    };
+    console.log(correctNumbers);
+});
 
 
 
