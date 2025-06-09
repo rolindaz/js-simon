@@ -84,6 +84,13 @@ numbersUlEl.addEventListener('afterprint', (e)=>{
 });
 
 // Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei numeri da indovinare sono stati individuati
+// poi creo una variabile counter per contare i numeri indovinati, che partirà quindi da 0
+
+let counter = 0;
+
+// poi mi servirà un array vuoto in cui inserire i numeri indovinati mano a mano che il programma verifica la loro correttezza
+
+let correctNumbers = [];
 
 // adesso dovrò far eseguire la verifica al programma, che deve cioè stabilire se ognuno dei numeri inseriti dall'utente (input value) equivale ad uno qualunque dei random li (perché l'ordine di inserimento non conta), ciclando un array in cui ho annoverato i numeri inseriti dall'utente. Questa verifica è triggerata dal click su conferma
 
@@ -101,17 +108,11 @@ formEl.addEventListener('submit', (e)=> {
 
     console.log(userNumbers);
 
-    // poi creo una variabile counter per contare i numeri indovinati, che partirà quindi da 0
-    
-    let counter = 0;
-    
-    // poi mi servirà un array vuoto in cui inserire i numeri indovinati mano a mano che il programma verifica la loro correttezza
-    
-    let correctNumbers = [];
     
     // ora creo una funzione che verifichi la corrispondenza tra gli elementi dei due array
-
+    
     function arraysEqual(userNumbers, randomNumbers) {
+
         for (let i = 0; i < userNumbers.length; i++) {
             let thisNumber = userNumbers[i];
             if (randomNumbers.includes(thisNumber) === true) {
@@ -119,13 +120,21 @@ formEl.addEventListener('submit', (e)=> {
                 counter++;
             };
         };
+        
+        console.log(counter, correctNumbers);
+
+        // loggo tutto per verifica:
+    };
+    
+    console.log(arraysEqual(userNumbers, randomNumbers));
+    
+    if (counter === 0) {
+    messageEl.innerText = 'Purtroppo non ne hai azzeccata una! Perché non ci riprovi?'
+    } else if (counter === 5) {
+        messageEl.innerText = "Congratulazioni, neanche un errore! Hai proprio una memoria da elefante, non c'è che dire."
+    } else {
         messageEl.innerText = `Ti sei ricordato ${counter} numeri su 5, complimenti! Questi sono i numeri che hai indovinato: ${correctNumbers.join(', ')}.`
     };
-
-    // loggo tutto per verifica:
-
-    console.log(arraysEqual(userNumbers, randomNumbers));
-    console.log(counter, correctNumbers);
 });
 
 
