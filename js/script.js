@@ -27,6 +27,9 @@ const userNumber3El = document.getElementById('number3');
 const userNumber4El = document.getElementById('number4');
 const userNumber5El = document.getElementById('number5');
 
+// prendo il messaggio dalla DOM
+const messageEl = document.getElementById('message');
+
 // aggiungo alla lista 5 li contenenti un math random, facendo apparire numeri interi per comodità
 
 // come posso fare? Potrei creare 5 variabili ognuna con un math random e appenderli alla lista. Questo metodo non mi piace molto perché è ripetitivo.
@@ -82,34 +85,47 @@ numbersUlEl.addEventListener('afterprint', (e)=>{
 
 // Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei numeri da indovinare sono stati individuati
 
-// intanto devo salvare i numeri inseriti in un array vuoto, partendo dalle variabili con i valori degli input che ho già creato
-
-let userNumbers = [];
-
-// dovrò creare una variabile counter per contare i numeri indovinati, che partirà quindi da 0
-
-let counter = 0;
-
-// poi mi servirà un array vuoto in cui inserire i numeri indovinati mano a mano che il programma verifica la loro correttezza
-
-let correctNumbers = [];
-
 // adesso dovrò far eseguire la verifica al programma, che deve cioè stabilire se ognuno dei numeri inseriti dall'utente (input value) equivale ad uno qualunque dei random li (perché l'ordine di inserimento non conta), ciclando un array in cui ho annoverato i numeri inseriti dall'utente. Questa verifica è triggerata dal click su conferma
 
-confirmButtonEl.addEventListener('click', function arrayCompare(arr, arr) {
-    userNumbers.push(userNumber1El.value, userNumber2El.value, userNumber3El.value, userNumber4El.value, userNumber5El.value);
+formEl.addEventListener('submit', (e)=> {
+
+    e.preventDefault();
+
+    // intanto salvo i numeri inseriti in un array vuoto, partendo dalle variabili con i valori degli input che ho già creato
+    
+    let userNumbers = [];
+
+    userNumbers.push(parseInt(userNumber1El.value), parseInt(userNumber2El.value), parseInt(userNumber3El.value), parseInt(userNumber4El.value), parseInt(userNumber5El.value));
     
     //loggo per conferma
 
     console.log(userNumbers);
 
-    for (let i = 0; i < userNumbers.length; i++) {
-        if (userNumbers[i] === randomNumbers[i]) {
-            let correctNumber = [i];
-            correctNumbers.push(i);
+    // poi creo una variabile counter per contare i numeri indovinati, che partirà quindi da 0
+    
+    let counter = 0;
+    
+    // poi mi servirà un array vuoto in cui inserire i numeri indovinati mano a mano che il programma verifica la loro correttezza
+    
+    let correctNumbers = [];
+    
+    // ora creo una funzione che verifichi la corrispondenza tra gli elementi dei due array
+
+    function arraysEqual(userNumbers, randomNumbers) {
+        for (let i = 0; i < userNumbers.length; i++) {
+            let thisNumber = userNumbers[i];
+            if (randomNumbers.includes(thisNumber) === true) {
+                correctNumbers.push(thisNumber);
+                counter++;
+            };
         };
+        messageEl.innerText = `Ti sei ricordato ${counter} numeri su 5, complimenti! Questi sono i numeri che hai indovinato: ${correctNumbers.join(', ')}.`
     };
-    console.log(correctNumbers);
+
+    // loggo tutto per verifica:
+
+    console.log(arraysEqual(userNumbers, randomNumbers));
+    console.log(counter, correctNumbers);
 });
 
 
