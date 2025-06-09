@@ -18,7 +18,10 @@ const numbersUlEl = document.getElementById('numbers-list');
 const formEl = document.getElementById('answers-form');
 
 // prendo il bottone conferma dalla DOM
-const confirmButtonEl = document.querySelector('.btn');
+const confirmButtonEl = document.querySelector('.btn-primary');
+
+// prendo il bottone rigioca dalla DOM
+const replayButtonEl = document.querySelector('.btn-success');
 
 // prendo gli input del form dalla DOM
 const userNumber1El = document.getElementById('number1');
@@ -127,6 +130,9 @@ formEl.addEventListener('submit', (e)=> {
     };
     
     console.log(arraysEqual(userNumbers, randomNumbers));
+
+    confirmButtonEl.classList.add('d-none');
+    replayButtonEl.classList.remove('d-none');
     
     if (counter === 0) {
     messageEl.innerText = 'Purtroppo non ne hai azzeccata una! Perché non ci riprovi?'
@@ -135,6 +141,10 @@ formEl.addEventListener('submit', (e)=> {
     } else {
         messageEl.innerText = `Ti sei ricordato ${counter} numeri su 5, complimenti! Questi sono i numeri che hai indovinato: ${correctNumbers.join(', ')}.`
     };
+
+    replayButtonEl.addEventListener('click', (e)=>{
+        formEl.submit();
+    });
 });
 
 
